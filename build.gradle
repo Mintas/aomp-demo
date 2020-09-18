@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.sbt.edu'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+allprojects {
+    apply plugin : 'java'
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        testCompile group: 'org.openjdk.jmh', name: 'jmh-core', version: '1.19'
+        testCompile group: 'org.openjdk.jmh', name: 'jmh-generator-annprocess', version: '1.19'
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
