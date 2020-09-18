@@ -9,9 +9,9 @@ public class FirstLock implements SLock {
     @Override
     public void lock() {
         int me = TwoThreadIds.myId();
-        //int another = TwoThreadIds.not(me);
+        int another = TwoThreadIds.not(me);
         wannaAquire[me] = true;
-        //while (wannaAquire[another]) {};
+        while (wannaAquire[another]) {};
     }
 
 
