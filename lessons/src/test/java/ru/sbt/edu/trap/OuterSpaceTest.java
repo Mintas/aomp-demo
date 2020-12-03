@@ -1,15 +1,11 @@
 package ru.sbt.edu.trap;
 
 import org.junit.Test;
-import ru.sbt.edu.counter.Counter;
 import ru.sbt.edu.locks.SLock;
 import ru.sbt.edu.locks.theory.FirstLock;
 import ru.sbt.edu.locks.theory.PetersonLock;
 import ru.sbt.edu.locks.theory.SecondLock;
 import ru.sbt.edu.utils.TwoThreadIds;
-
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
 
 public class OuterSpaceTest {
     @Test
@@ -33,7 +29,7 @@ public class OuterSpaceTest {
         SLock lock = new PetersonLock();
         OuterSpace space = new OuterSpace(lock);
 
-        testWalks(space, 10);
+        testWalks(space, 1000);
     }
 
     private void testWalks(OuterSpace outerSpace, int iters) {

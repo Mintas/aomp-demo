@@ -14,8 +14,11 @@ public class LockCounter implements Counter {
     @Override
     public void increment() {
         lock.lock();
-        count++;
-        lock.unlock();
+        try {
+            count++;
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override

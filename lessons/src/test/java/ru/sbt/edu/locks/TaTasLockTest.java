@@ -6,6 +6,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import ru.sbt.edu.counter.Counter;
 import ru.sbt.edu.counter.LockCounter;
+import ru.sbt.edu.locks.tas.TaTasLock;
 
 @BenchmarkMode(Mode.Throughput)
 @Warmup(iterations = 5)

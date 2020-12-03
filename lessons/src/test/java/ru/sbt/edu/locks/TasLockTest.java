@@ -6,6 +6,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import ru.sbt.edu.counter.Counter;
 import ru.sbt.edu.counter.LockCounter;
+import ru.sbt.edu.locks.tas.TasLock;
 
 @BenchmarkMode(Mode.Throughput)
 @Warmup(iterations = 5)
@@ -20,17 +21,17 @@ public class TasLockTest {
 
     @Benchmark
     @Group("ConcurentCounter")
-    @GroupThreads(8)
+    @GroupThreads(1)
     public void increments(final CounterState state) {
         state.counter.increment();
     }
 
-    @Benchmark
-    @Group("ConcurentCounter")
-    @GroupThreads(8)
-    public long gets(final CounterState state) {
-        return state.counter.value();
-    }
+//    @Benchmark
+//    @Group("ConcurentCounter")
+//    @GroupThreads(8)
+//    public long gets(final CounterState state) {
+//        return state.counter.value();
+//    }
 
     public static void main(String[] args) throws Exception {
         final Options options = new OptionsBuilder()

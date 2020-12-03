@@ -1,4 +1,6 @@
-package ru.sbt.edu.locks;
+package ru.sbt.edu.locks.tas;
+
+import ru.sbt.edu.locks.SLock;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

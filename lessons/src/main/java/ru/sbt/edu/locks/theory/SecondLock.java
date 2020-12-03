@@ -10,7 +10,7 @@ public class SecondLock implements SLock {
     public void lock() {
         int me = TwoThreadIds.myId();
         porter = me;
-        while (porter == me) {};
+        while (porter == me) {}
     }
 
 
