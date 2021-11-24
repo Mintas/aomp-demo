@@ -9,13 +9,15 @@ public class RecursiveFibonacci extends RecursiveTask<Integer> {
         arg = n;
     }
 
-    protected Integer compute() {
+    protected Integer compute() { //A from FJP - aka callee thread is able to go down
+        // to the tail of recursion
         if (arg > 1) {
             RecursiveFibonacci rightTask = new RecursiveFibonacci(arg - 1);
-            rightTask.fork();
+            rightTask.fork(); //add to queue; free FJP threads
 
             RecursiveFibonacci leftTask = new RecursiveFibonacci(arg - 2);
-            return rightTask.join() + leftTask.compute();
+            //A
+            return leftTask.compute() + rightTask.join();//A
         } else {
             return arg;
         }
