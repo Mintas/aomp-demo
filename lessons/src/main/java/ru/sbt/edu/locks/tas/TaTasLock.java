@@ -10,13 +10,16 @@ public class TaTasLock implements SLock {
     @Override
     public void lock() {
         while(true) {
-            while (locked.get()) {}
-            if (!locked.getAndSet(true)) return;
+            while (locked.get()) { // re-read local cache copy S ||| I -> Mem.. S
+                Thread.onSpinWait();
+            } //all threads see changes simultaneously ''
+            if (!locked.getAndSet(true)) return; // M ||| I ->
         }
+        //
     }
 
     @Override
     public void unlock() {
         locked.set(false);
-    }
+    } // M ||| I
 }

@@ -20,7 +20,7 @@ public class BoundedPartialQueue<T> implements Queue<T> {
             notFullCondition = enqLock.newCondition();
 
     final AtomicInteger size = new AtomicInteger(0);
-    final int capacity;
+    final int capacity; //const
 
     public BoundedPartialQueue(int capacity) {
         this.capacity = capacity;

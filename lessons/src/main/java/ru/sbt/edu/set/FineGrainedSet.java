@@ -66,6 +66,7 @@ public class FineGrainedSet<T> implements ISet<T> {
         //initialize lookup
         Node pred = head;
         Node curr = pred.next;
+
         pred.lock();
         try {
             curr.lock();

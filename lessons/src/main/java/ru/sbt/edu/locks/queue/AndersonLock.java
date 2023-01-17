@@ -8,14 +8,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AndersonLock implements SLock {
     private final ThreadLocal<Integer> mySlotIndex = ThreadLocal.withInitial(() -> 0);
     private final AtomicInteger tail;
-    private volatile boolean[] flag; //here to exclude compiler optimisations in while loop, not to introduce memory barrier
+    private final boolean[] permission; //
     private final int size;
 
     public AndersonLock(int capacity) {
         size = capacity;
         tail = new AtomicInteger(0);
-        flag = new boolean[capacity];
-        flag[0] = true;
+        permission = new boolean[capacity];
+        permission[0] = true;
     }
 
     @Override
@@ -31,7 +31,8 @@ public class AndersonLock implements SLock {
     }
 
     private void localSpinning(int slot) {
-        while (!flag[slot]) {
+        while (!permission[slot]) {
+            Thread.onSpinWait();
         }
     }
 
@@ -43,11 +44,11 @@ public class AndersonLock implements SLock {
 
     private int releaseSlot() {
         int slot = mySlotIndex.get();
-        flag[slot] = false;
+        permission[slot] = false;
         return slot;
     }
 
     private void notify(int slot) {
-        flag[(slot + 1) % size] = true;
+        permission[(slot + 1) % size] = true;
     }
 }

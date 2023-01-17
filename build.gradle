@@ -19,9 +19,10 @@ allprojects {
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
-        testCompile group: 'org.openjdk.jmh', name: 'jmh-core', version: '1.19'
-        testCompile group: 'org.openjdk.jmh', name: 'jmh-generator-annprocess', version: '1.19'
+        testImplementation 'junit:junit:4.12'
+        testImplementation 'org.openjdk.jmh:jmh-core:1.19'
+        testImplementation 'org.openjdk.jmh:jmh-generator-annprocess:1.19'
+        //testImplementation 'org.jetbrains.kotlinx:lincheck:2.14'
 
 
         compileOnly 'org.projectlombok:lombok:1.18.10'
@@ -32,5 +33,5 @@ allprojects {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'junit:junit:4.12'
 }

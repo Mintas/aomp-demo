@@ -63,6 +63,7 @@ public class LazySet<T> implements ISet<T> {
 
     private boolean doMarkAndRemove(Node pred, Node curr) {
         curr.markDeleted(); //logical
+        //only contains actually interleaves
         pred.next = curr.next; //physical removal
         return true;
     }
@@ -102,7 +103,8 @@ public class LazySet<T> implements ISet<T> {
     }
 
     private boolean validate(Node pred, Node curr) {
-        return !pred.marked && !curr.marked && pred.next == curr;
+        return !pred.marked && !curr.marked
+                && pred.next == curr;
     }
 
     @Override

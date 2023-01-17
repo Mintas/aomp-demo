@@ -32,6 +32,7 @@ public class CLHLock implements SLock {
 
     private void localSpinning(QNode pred) {
         while (pred.isLocked()) {
+            Thread.onSpinWait();
         }
     }
 

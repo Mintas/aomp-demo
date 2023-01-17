@@ -2,6 +2,8 @@ package ru.sbt.edu.trap;
 
 import org.junit.Test;
 import ru.sbt.edu.locks.SLock;
+import ru.sbt.edu.locks.tas.TaTasLock;
+import ru.sbt.edu.locks.tas.TasLock;
 import ru.sbt.edu.locks.theory.FirstLock;
 import ru.sbt.edu.locks.theory.PetersonLock;
 import ru.sbt.edu.locks.theory.SecondLock;
@@ -13,7 +15,7 @@ public class OuterSpaceTest {
         SLock lock = new FirstLock();
         OuterSpace space = new OuterSpace(lock);
 
-        testWalks(space, 10);
+        testWalks(space, 1000);
     }
 
     @Test
@@ -26,10 +28,10 @@ public class OuterSpaceTest {
 
     @Test
     public void petersonSpaceWalk() {
-        SLock lock = new PetersonLock();
+        SLock lock = new TasLock();
         OuterSpace space = new OuterSpace(lock);
 
-        testWalks(space, 1000);
+        testWalks(space, 10_000);
     }
 
     private void testWalks(OuterSpace outerSpace, int iters) {

@@ -9,8 +9,8 @@ public class TasLock  implements SLock {
 
     @Override
     public void lock() {
-        while (locked.getAndSet(true)) {
-            //busy waiting aka spinning
+        while (locked.getAndSet(true)) {// M ||| I -> I ? Mem .. S .. M ||| I
+            Thread.onSpinWait();
         }
     }
 

@@ -9,7 +9,7 @@ public class MCSLock implements SLock {
     private final ThreadLocal<QNode> myNode;
 
     public MCSLock() {
-        tail = new AtomicReference<QNode>(null);
+        tail = new AtomicReference<>(null);
         myNode = ThreadLocal.withInitial(QNode::new);
     }
 
@@ -38,7 +38,9 @@ public class MCSLock implements SLock {
     }
 
     private void waitForNotification(QNode qNode) {
-        while (qNode.locked) {}
+        while (qNode.locked) {
+            Thread.onSpinWait();
+        }
     }
 
     @Override
@@ -61,7 +63,9 @@ public class MCSLock implements SLock {
     }
 
     private void waitForSuccessor(QNode qNode) {
-        while (qNode.next == null) {}
+        while (qNode.next == null) {
+            Thread.onSpinWait();
+        }
     }
 
     private static class QNode {

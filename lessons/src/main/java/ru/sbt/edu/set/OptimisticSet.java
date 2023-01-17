@@ -3,7 +3,6 @@ package ru.sbt.edu.set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -106,7 +105,7 @@ public class OptimisticSet<T> implements ISet<T> {
     }
 
     @Override
-    public boolean contains(T item) {
+    public boolean contains(T item) { //true -> remove:
         return scan(item,
                 (pred, curr) -> true,
                 (pred, curr) -> false);

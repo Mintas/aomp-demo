@@ -5,15 +5,15 @@ import ru.sbt.edu.utils.TwoThreadIds;
 
 public class PetersonLock implements SLock {
     private final boolean[] wannaAquire = new boolean[2];
-    private int porter;
+    private int victim;
 
     @Override
     public void lock() {
         int me = TwoThreadIds.myId();
         int another = TwoThreadIds.not(me);
         wannaAquire[me] = true;
-        porter = me;
-        while (wannaAquire[another] && porter == me) {}
+        victim = me;
+        while (wannaAquire[another] && victim == me) {}
     }
 
 

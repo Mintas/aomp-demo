@@ -11,7 +11,6 @@ public class LockFreeSet<T> implements ISet<T> {
 
     public boolean add(T item) {
         int key = item.hashCode();
-        boolean splice;
         while (true) {
             // find predecessor and curren entries
             Window window = find(head, key);

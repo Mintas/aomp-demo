@@ -28,6 +28,7 @@ public class ThreadMatrixMultiplier {
                 try {
                     worker[row][col].join();
                 } catch (InterruptedException ex) {
+                    //
                 }
             }
         }
