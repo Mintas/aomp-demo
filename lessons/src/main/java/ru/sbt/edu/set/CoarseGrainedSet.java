@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
 public class CoarseGrainedSet<T> implements ISet<T> {
@@ -53,7 +54,8 @@ public class CoarseGrainedSet<T> implements ISet<T> {
         return true;
     }
 
-    private boolean scan(T item, BiPredicate<Node, Node> onHit, BiPredicate<Node, Node> onMiss) {
+    private boolean scan(T item, BiFunction<Node, Node, Boolean> onHit,
+                         BiFunction<Node, Node, Boolean> onMiss) {
         int key = item.hashCode();
         //initialize lookup
         Node pred = head;
@@ -67,10 +69,10 @@ public class CoarseGrainedSet<T> implements ISet<T> {
             }
             //found item!
             if (key == curr.key) {
-                return onHit.test(pred, curr);
+                return onHit.apply(pred, curr);
             }
             //item is missing
-            return onMiss.test(pred, curr);
+            return onMiss.apply(pred, curr);
         } finally {
             lock.unlock();
         }

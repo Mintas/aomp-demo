@@ -20,3 +20,4 @@ transitiveProjectDeps*
 *.jks
 out/
 gradle-reports/
+*.DS_Store

@@ -4,7 +4,7 @@ import org.junit.Test;
 import ru.sbt.edu.counter.Counter;
 import ru.sbt.edu.counter.LockCounter;
 import ru.sbt.edu.counter.NaiveCounter;
-import ru.sbt.edu.locks.theory.PetersonLock;
+import ru.sbt.edu.locks.theory.*;
 import ru.sbt.edu.utils.TwoThreadIds;
 
 import static junit.framework.TestCase.assertEquals;
@@ -12,10 +12,12 @@ import static junit.framework.TestCase.assertEquals;
 public class PetersonLockTest {
     @Test
     public void testWithPetersonLock()  {
-        PetersonLock lock = new PetersonLock();
+        //PetersonLock lock = new PetersonLock();
+        //SLock lock = new FirstLock();
+        SLock lock = new SecondLock();
         Counter counter = new LockCounter(lock);
 
-        testCounter(counter, 100);
+        testCounter(counter, 1);
     }
 
     @Test

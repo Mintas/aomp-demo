@@ -4,6 +4,7 @@ package ru.sbt.edu.locks.queue;
 import ru.sbt.edu.locks.SLock;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class AndersonLock implements SLock {
     private final ThreadLocal<Integer> mySlotIndex = ThreadLocal.withInitial(() -> 0);
@@ -25,7 +26,7 @@ public class AndersonLock implements SLock {
     }
 
     private int chooseSlot() {
-        int slot = tail.getAndIncrement() % size;
+        int slot = tail.getAndIncrement() % size; //memory barrier
         mySlotIndex.set(slot);
         return slot;
     }

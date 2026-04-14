@@ -21,7 +21,7 @@ public class LockFreeSet<T> implements ISet<T> {
             } else {
                 // splice in new node
                 Node node = new Node(item, curr);
-                if (pred.next.compareAndSet(curr, node, false, false)) {
+                if (pred.nextAndMyMark.compareAndSet(curr, node, false, false)) {
                     return true;
                 }
             }
@@ -40,11 +40,11 @@ public class LockFreeSet<T> implements ISet<T> {
                 return false;
             } else {
                 // snip out matching node
-                Node succ = curr.next.getReference();
-                snip = curr.next.attemptMark(succ, true);
+                Node succ = curr.nextAndMyMark.getReference();
+                snip = curr.nextAndMyMark.attemptMark(succ, true);
                 if (!snip)
                     continue;
-                pred.next.compareAndSet(curr, succ, false, false);
+                pred.nextAndMyMark.compareAndSet(curr, succ, false, false);
                 return true;
             }
         }
@@ -56,9 +56,9 @@ public class LockFreeSet<T> implements ISet<T> {
      */
     public boolean contains(T item) {
         int key = item.hashCode();
-        // find predecessor and curren entries
+        // find predecessor and current entries
         Window window = find(head, key);
-        Node pred = window.pred, curr = window.curr;
+        Node curr = window.curr;
         return (curr.key == key);
     }
 
@@ -66,14 +66,14 @@ public class LockFreeSet<T> implements ISet<T> {
     private class Node {
         private final T item;
         private final int key;
-        private final AtomicMarkableReference<Node> next;
+        private final AtomicMarkableReference<Node> nextAndMyMark;
 
-        Node(T item, int key, Node next) {
-            this(item, key, new AtomicMarkableReference<>(next, false));
+        Node(T item, int key, Node nextAndMyMark) {
+            this(item, key, new AtomicMarkableReference<>(nextAndMyMark, false));
         }
 
-        Node(T item, Node next) {
-            this(item,  item.hashCode(), next);
+        Node(T item, Node nextAndMyMark) {
+            this(item,  item.hashCode(), nextAndMyMark);
         }
     }
 
@@ -104,16 +104,16 @@ public class LockFreeSet<T> implements ISet<T> {
         Node pred, curr, succ;
         boolean[] marked = {false}; // is curr marked?
         boolean snip;
-        retry: while (true) {
+        rescan: while (true) { //goto
             pred = head;
-            curr = pred.next.getReference();
+            curr = pred.nextAndMyMark.getReference();
             while (true) {
-                succ = curr.next.get(marked);
+                succ = curr.nextAndMyMark.get(marked);
                 while (marked[0]) {           // replace curr if marked
-                    snip = pred.next.compareAndSet(curr, succ, false, false);
-                    if (!snip) continue retry;
-                    curr = pred.next.getReference();
-                    succ = curr.next.get(marked);
+                    snip = pred.nextAndMyMark.compareAndSet(curr, succ, false, false);
+                    if (!snip) continue rescan;
+                    curr = pred.nextAndMyMark.getReference();
+                    succ = curr.nextAndMyMark.get(marked);
                 }
                 if (curr.key >= key)
                     return new Window(pred, curr);

@@ -55,4 +55,12 @@ public class ThreadMatrixMultiplierTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testPool() {
+        ExecutorService threadPool = Executors.newFixedThreadPool(16);
+        int size = 500;
+        double[][] multiply = new ThreadPoolMatrixMultiplier(new double[size][size],
+                new double[size][size], threadPool).multiply();
+    }
 }
